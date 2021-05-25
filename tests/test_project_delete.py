@@ -1,8 +1,9 @@
-from fixture.application import Application
+
 import random
 
 
 def test_delete_some_project(app, db):
+    app.session.login("administrator", "root")
     if db.get_project_list() == 0:
         app.project.create(Project(name="New project", description="new_descr"))
     old_projects = db.get_project_list()

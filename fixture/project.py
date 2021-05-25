@@ -1,5 +1,6 @@
 from model.project import Project
 
+
 class ProjectHelper:
 
     def __init__(self, app):
@@ -20,6 +21,7 @@ class ProjectHelper:
         wd.find_element_by_xpath("//input[@value='Add Project']").click()
        # self.return_to_projects_page()
         self.project_cache = None
+        return project
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -40,7 +42,7 @@ class ProjectHelper:
         self.select_project_by_id(id)
         #submit deletion
         wd.find_element_by_link_text("Delete Project").click()
-#        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
         self.project_cache = None
 
 
