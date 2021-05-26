@@ -12,4 +12,3 @@ def test_delete_some_project(app, db):
     assert len(old_projects) - 1 == app.project.count()
     old_projects.remove(project2)
     assert old_projects == new_projects
-   # assert sorted(new_projects, key=Project.id_or_max) == sorted(db.get_project_list(), key=Project.id_or_max)

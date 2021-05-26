@@ -55,20 +55,7 @@ class ProjectHelper:
     def count(self):
         wd = self.app.wd
         self.open_projects_page()
-        return len(wd.find_elements_by_xpath('//a[@href = "manage_proj_edit_page.php?project_id=' + str(id) + '"]'))
+        c = len(wd.find_elements_by_xpath('//a[contains(@href, "manage_proj_edit_page.php?project_id=")]'))
+        return c
 
-    project_cache = None
-
-    def get_project_list(self):
-        if self.project_cache is None:
-            wd = self.app.wd
-            self.open_projects_page()
-            self.project_cache = []
-            for element in wd.find_elements_by_xpath('//a[@href = "manage_proj_edit_page.php?project_id=' + str(id) + '"]'):
-                text = element.text
-                s1 = ''//a[@href = "manage_proj_edit_page.php?project_id=' + str(id) + '"]''
-                id = str(id)
-                id = element.find_element_by_name("selected[]").get_attribute("value")
-                self.project_cache.append(Project(name=text, id=id))
-        return list(self.project_cache)
 

@@ -29,6 +29,7 @@ def app(request, config):
     browser = request.config.getoption("--browser")
     if fixture is None or not fixture.is_valid():
         fixture = Application(browser=browser, config=config)
+        fixture.session.ensure_login(username=config['webadmin']["username"], password=config['webadmin']["password"])
     return fixture
 
 @pytest.fixture(scope="session", autouse=True)
@@ -37,6 +38,7 @@ def configure_server(request, config):
     def fin():
         restore_server_configuration(config['ftp']['host'], config['ftp']['username'], config['ftp']['password'])
     request.addfinalizer(fin)
+
 
 def install_server_configuration(host, username, password):
     with ftputil.FTPHost(host, username, password) as remote:
@@ -73,7 +75,8 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="session")
 def db(request):
     db_config = load_config(request.config.getoption("--target"))['db']
-    dbfixture=DbFixture(host=db_config['host'], name=db_config['name'], user=db_config['user'], password=db_config['password'])
+    dbfixture=DbFixture(host=db_config['host'], name=db_config['name'],
+                        user=db_config['user'], password=db_config['password'])
     def fin():
         dbfixture.destroy()
     request.addfinalizer(fin)
