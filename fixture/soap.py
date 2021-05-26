@@ -1,5 +1,6 @@
 from suds.client import Client
 from suds import WebFault
+from model.project import Project
 
 
 class SoapHelper:
@@ -12,6 +13,26 @@ class SoapHelper:
         try:
             client.service.mc_login(username, password)
             return True
+        except WebFault:
+            return False
+
+
+
+
+    def get_project_list(self, username, password):
+        client = Client("http://localhost/mantisbt-1.2.20/api/soap/mantisconnect.php?wsdl")
+        try:
+            list = client.service.mc_projects_get_user_accessible(username, password)
+            return list
+        except WebFault:
+            return False
+
+
+    def creat_project(self, username, password, data):
+        client = Client("http://localhost/mantisbt-1.2.20/api/soap/mantisconnect.php?wsdl")
+        try:
+            client.service.mc_project_add(username, password, data)
+            return i
         except WebFault:
             return False
 

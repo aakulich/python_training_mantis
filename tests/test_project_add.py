@@ -20,4 +20,17 @@ def test_project_add(app, db):
 
 
 
+def test_add_project_soap(app):
+    username = "administrator"
+    password = "root"
+    old_projects = app.soap.get_project_list(username, password)
+    project_name = random_proj_name("project_", 10)
+    project = app.project.create(Project(name=project_name))
+    new_projects = app.soap.get_project_list(username,password)
+    old_projects.append(project)
+    assert len(old_projects) == len(new_projects)
+
+
+
+
 
