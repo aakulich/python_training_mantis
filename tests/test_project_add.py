@@ -21,12 +21,13 @@ def test_project_add(app, db):
 
 
 def test_add_project_soap(app):
-    username = "administrator"
-    password = "root"
-    old_projects = app.soap.get_project_list(username, password)
+    #username = "administrator"
+    #password = "root"
+    cred = app.config['webadmin']
+    old_projects = app.soap.get_project_list(cred["username"], cred["password"])
     project_name = random_proj_name("project_", 10)
     project = app.project.create(Project(name=project_name))
-    new_projects = app.soap.get_project_list(username,password)
+    new_projects = app.soap.get_project_list(cred["username"], cred["password"])
     old_projects.append(project)
     assert len(old_projects) == len(new_projects)
 

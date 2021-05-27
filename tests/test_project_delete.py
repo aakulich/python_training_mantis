@@ -15,14 +15,15 @@ def test_delete_some_project(app, db):
 
 
 def test_delete_project_with_soap(app):
-    username = "administrator"
-    password = "root"
-    if len(app.soap.get_project_list(username, password)) == 0:
+    #username = "administrator"
+    #password = "root"
+    cred = app.config['webadmin']
+    if len(app.soap.get_project_list(cred["username"], cred["password"])) == 0:
         app.project.create(Project(name="New project", description="new_descr"))
-    old_projects = app.soap.get_project_list(username, password)
+    old_projects = app.soap.get_project_list(cred["username"], cred["password"])
     project2 = random.choice(old_projects)
     app.project.delete_project_by_id(project2.id)
-    new_projects = app.soap.get_project_list(username, password)
+    new_projects = app.soap.get_project_list(cred["username"], cred["password"])
     assert len(old_projects) - 1 == app.project.count()
     old_projects.remove(project2)
     assert len(old_projects) == len(new_projects)
